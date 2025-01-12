@@ -1,17 +1,24 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <h1>Boat List</h1>
 
 {% for boat in boats %}
-  <div class="card">
+<div class="card">
+  <a href="/boats/{{ boat.id }}">
     <div class="card-content">
       <span class="card-title">{{ boat.name }}</span>
       <p>model: {{ boat.model }}</p>
       <p>Description: {{ boat.description }}</p>
-        <p>production: {{ boat.production }}</p>
+      <p>production: {{ boat.production }}</p>
     </div>
-  </div>
-{% endfor %}
-
-{% endblock %}
+    <div>
+      {% load static %}
+      <img
+        src="{% static boat.image|cut:'main_app/static/' %}"
+        width="100px"
+        height="100px"
+      />
+    </div>
+  </a>
+</div>
+{% endfor %} {% endblock %}
