@@ -9,6 +9,11 @@
     <p>Description: {{ boat.description }}</p>
     <p>production: {{ boat.production }}</p>
   </div>
+  <div class="card-section">
+    <a href="{% url 'boats_update' boat.id %}">Edit</a>
+    <a href="{% url 'boats_delete' boat.id %}"> Delete</a>
+
+  </div>
   <div>
     {% load static %}
     <img
@@ -18,4 +23,49 @@
     />
   </div>
 </div>
+<div>
+  <form method="POST" action="{% url 'add_servicing' boat.id %}">
+    {% csrf_token %}
+    {{ Servicing_form.as_p }}
+    <input type="submit" class="btn" value="Add Service">
+  </form>
+  <br>
+  {% if boat.serves_for_today %}
+    <div class="card-panel teal-text center-align">{{boat.name}} has been serves all checks for today</div>
+  {% else %}
+    <div class="card-panel red-text center-align">{{boat.name}} might be damage</div>
+  {% endif %}
+  <table class="striped">
+</div>
+<table class="stripped">
+  <thead>
+    <th> Date </th>
+    <th> Check </th>
+  </thead>
+  <tbody>
+    {% for servicing in boat.servicing_set.all %}
+    <tr>
+      <td> {{ servicing.date }}</td>
+      <td> {{ servicing.get_checks_display }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div>
+</div>
+<script>
+  var dateEl = document.getElementById('id_date');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
+  });
+
+  let selectEl = document.getElementById('id_checks');
+  M.FormSelect.init(selectEl);
+
+
+</script>
+
 {% endblock %}
