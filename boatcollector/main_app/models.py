@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse 
 from datetime import date
 # Create your models here.
 
@@ -8,6 +9,14 @@ CHECKS = (
     ('three', 'CheckThree')
 )
 
+class Flag(models.Model):
+    name = models.CharField(max_length=50)
+    color = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('flags_detail', kwargs={'pk': self.id})
+
 class Boat(models.Model):
     name = models.CharField(max_length=100)
     model = models.IntegerField()
@@ -15,7 +24,10 @@ class Boat(models.Model):
     production = models.CharField(max_length=100)
     # image = models.CharField(default=None, blank=True, null=True, max_length=2000)
     image = models.ImageField(upload_to='main_app/static/uploads/', default='')
-
+    flags = models.ManyToManyField(Flag)
+    
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'boat_id': self.id})
     def serves_for_today(self):
         return self.servicing_set.filter(date=date.today()).count() >= len(CHECKS)
 
