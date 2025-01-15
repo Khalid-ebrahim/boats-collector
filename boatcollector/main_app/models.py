@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse 
 from datetime import date
+from django.contrib.auth.models import User
 # Create your models here.
 
 CHECKS = (
@@ -25,7 +26,8 @@ class Boat(models.Model):
     # image = models.CharField(default=None, blank=True, null=True, max_length=2000)
     image = models.ImageField(upload_to='main_app/static/uploads/', default='')
     flags = models.ManyToManyField(Flag)
-    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
     def get_absolute_url(self):
         return reverse('detail', kwargs={'boat_id': self.id})
     def serves_for_today(self):

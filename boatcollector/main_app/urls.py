@@ -22,4 +22,6 @@ urlpatterns = [
 
 
     path('boats/<int:boat_id>/unassoc_flag/<int:flag_id>/', views.unassoc_flag, name='unassoc_flag'),
+
+    path('accounts/signup/', views.signup, name='signup')
 ]
